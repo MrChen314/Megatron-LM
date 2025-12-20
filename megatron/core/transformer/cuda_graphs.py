@@ -59,9 +59,9 @@ except:
 try:
     from tqdm import tqdm
 
-    HAVE_TQDM = True
+    USE_TQDM = True
 except:
-    HAVE_TQDM = False
+    USE_TQDM = False
 
 _IS_GRAPH_CAPTURING = False
 _IS_GRAPH_WARMUP = False
