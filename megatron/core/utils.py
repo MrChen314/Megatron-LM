@@ -155,7 +155,9 @@ def experimental_fn(introduced_with_version: str):
             PkgVersion(introduced_with_version).minor + max_lifetime
             < PkgVersion(mcore_version).minor
         ):
-            logger.warning(
+            log_single_rank(
+                logger,
+                logging.WARNING,
                 "%s has reached end of life. Please migrate to a non-experimental function.",
                 func.__name__,
             )
@@ -220,7 +222,9 @@ def experimental_cls(introduced_with_version: str):
             PkgVersion(introduced_with_version).minor + max_lifetime
             < PkgVersion(mcore_version).minor
         ):
-            logger.warning(
+            log_single_rank(
+                logger,
+                logging.WARNING,
                 "%s has reached end of life. Please migrate to a non-experimental function.",
                 cls.__name__,
             )

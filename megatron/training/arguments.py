@@ -123,7 +123,7 @@ def parse_args(extra_args_provider=None, ignore_unknown_args=False):
     if not args.enable_msc:
         MultiStorageClientFeature.disable()
         assert MultiStorageClientFeature.is_enabled() is False
-        print('WARNING: The MSC feature is disabled.')
+        warn_rank_0('The MSC feature is disabled.')
 
     return args
 
@@ -1298,7 +1298,8 @@ def validate_args(args, defaults={}):
         assert args.replication_jump is not None, "--replication requires the value of --replication-jump!"
         assert args.non_persistent_ckpt_type == "local", f"--replication requires args.non_persistent_ckpt_type == 'local', but got: {args.non_persistent_ckpt_type}"
     elif args.replication_jump:
-        print("Warning: --replication-jump was specified despite not using replication. Ignoring.")
+        if args.rank == 0:
+            print("Warning: --replication-jump was specified despite not using replication. Ignoring.")
         args.replication_jump = None
 
     if args.delay_wgrad_compute:

@@ -819,7 +819,8 @@ def maybe_save_dataloader_state(train_iterator, iteration, dataloader_save_path)
         return
 
     dp_rank = mpu.get_data_parallel_rank()
-    print(f"saving dataloader checkpoint at iteration {iteration} to {dataloader_save_path}")
+    if dp_rank == 0:
+        print(f"saving dataloader checkpoint at iteration {iteration} to {dataloader_save_path}")
     train_dataloader_state_dict = train_iterator.iterable.save_state()
     data_state_save_path = get_checkpoint_name(
         dataloader_save_path, iteration,
@@ -1800,7 +1801,7 @@ def load_checkpoint(ddp_model, optimizer, opt_param_scheduler, load_arg='load', 
             if 'rerun_state_machine' in state_dict:
                 get_rerun_state_machine().load_state_dict(state_dict['rerun_state_machine'])
         except Exception as e:
-            print(f"Unable to restore RerunMachine from checkpoint: {e}. Skipping.")
+            print_rank_0(f"Unable to restore RerunMachine from checkpoint: {e}. Skipping.")
 
     # rng states.
     if not release and not args.finetune and not args.no_load_rng and not ignore_rng_state:
@@ -1815,7 +1816,7 @@ def load_checkpoint(ddp_model, optimizer, opt_param_scheduler, load_arg='load', 
                     if f"({pp_rank}, {tp_rank})" in state_dict['rng_state']:
                         rng_state = state_dict['rng_state'][f"({pp_rank}, {tp_rank})"]
                     else:
-                        print("WARNING: RNG state not found for current TP/PP rank")
+                        print_rank_0("WARNING: RNG state not found for current TP/PP rank")
                         rng_state = next(iter(state_dict['rng_state'].values()))
                 else:
                     rng_state = state_dict['rng_state']

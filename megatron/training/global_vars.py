@@ -255,7 +255,8 @@ def _set_adlr_autoresume(args):
         try:
             from userlib.auto_resume import AutoResume
         except ImportError:
-            print('ADLR autoresume is not available, exiting ...')
+            if args.rank == 0:
+                print('ADLR autoresume is not available, exiting ...')
             sys.exit()
 
         _GLOBAL_ADLR_AUTORESUME = AutoResume

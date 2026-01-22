@@ -17,6 +17,7 @@ import torch
 from torch import multiprocessing as mp
 
 from ..utils import debug_time
+from megatron.core.utils import safe_get_rank
 
 logger = logging.getLogger(__name__)
 
@@ -265,7 +266,8 @@ class TemporalAsyncCaller(AsyncCaller):
         if self.process:
             logger.debug(f"rank: {torch.distributed.get_rank()}, joining self.process")
             if abort:
-                logger.warning(f"Temporal worker aborted in rank {torch.distributed.get_rank()}")
+                if safe_get_rank() == 0:
+                    logger.warning(f"Temporal worker aborted in rank {torch.distributed.get_rank()}")
                 self.process.kill()
             else:
                 self.process.join()
@@ -424,7 +426,8 @@ class PersistentAsyncCaller(AsyncCaller):
         )
         if self.process:
             if abort:
-                logger.warning(f"Persistent worker aborted in rank {torch.distributed.get_rank()}")
+                if safe_get_rank() == 0:
+                    logger.warning(f"Persistent worker aborted in rank {torch.distributed.get_rank()}")
                 self.process.kill()
             else:
                 self.queue.put('DONE')
