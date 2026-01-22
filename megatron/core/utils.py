@@ -46,6 +46,7 @@ except ImportError:
 
 from megatron.core import config
 from megatron.core.package_info import __version__ as mcore_version
+from megatron.core._rank_utils import safe_get_rank
 
 try:
     from torch.distributed._tensor import DTensor
@@ -831,19 +832,6 @@ def scaled_init_method_normal(sigma, num_layers, multiplier=2.0):
     std = sigma / math.sqrt(multiplier * num_layers)
 
     return functools.partial(torch.nn.init.normal_, mean=0.0, std=std)
-
-
-def safe_get_rank() -> int:
-    """Internal function that safely checks and returns the rank of the caller."""
-
-    if torch.distributed.is_initialized():
-        return torch.distributed.get_rank()
-
-    # If torch.distributed is not initialized, try to read environment variables.
-    try:
-        return int(os.environ.get("RANK", 0))
-    except (ValueError, TypeError):
-        return 0
 
 
 def log_single_rank(logger: logging.Logger, *args: Any, rank: int = 0, **kwargs: Any):

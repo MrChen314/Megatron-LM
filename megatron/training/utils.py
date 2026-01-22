@@ -12,6 +12,7 @@ from collections import defaultdict
 import torch
 
 from megatron.core.msc_utils import MultiStorageClientFeature, open_file
+from megatron.core._rank_utils import safe_get_rank as _safe_get_rank
 
 try:
     from transformer_engine.pytorch.optimizers import multi_tensor_applier, multi_tensor_l2norm
@@ -387,17 +388,6 @@ def get_ltor_masks_and_position_ids(data,
     attention_mask = attention_mask < 0.5
 
     return attention_mask, loss_mask, position_ids
-
-
-def _safe_get_rank():
-    """Return rank by first querying torch.distributed, otherwise fall back to RANK env."""
-    if torch.distributed.is_initialized():
-        return torch.distributed.get_rank()
-    try:
-        rank = int(os.environ.get("RANK", 0))
-    except (ValueError, TypeError):
-        rank = 0
-    return rank
 
 
 def print_rank_0(message, rank=None):
