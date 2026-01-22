@@ -184,8 +184,9 @@ def load_common_state_dict(checkpoint_dir: Union[str, Path]) -> StateDict:
         checkpoint_dir = str(checkpoint_dir)
         if safe_get_rank() == 0:
             logger.warning(
-                "DEPRECATED: Passing 'checkpoint_dir' as a Path object in load_common_state_dict will "
-                "no longer be supported in a future release. Please pass it as a string instead."
+                "DEPRECATED: Passing 'checkpoint_dir' as a Path object in "
+                "load_common_state_dict will no longer be supported in a future release. "
+                "Please pass it as a string instead."
             )
     sharded_strategy, common_strategy = verify_checkpoint_and_load_strategy(checkpoint_dir)
     return common_strategy.load_common(checkpoint_dir)

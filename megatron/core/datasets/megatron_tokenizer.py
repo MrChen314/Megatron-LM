@@ -28,9 +28,9 @@ class MegatronLegacyTokenizer(ABC):
         if safe_get_rank() == 0:
             # Deprecation warning
             logger.warning(
-                "You’re using the legacy tokenizer system, which is deprecated "
-                "and will be removed in a future release. Please migrate to the new tokenizer system "
-                "(`megatron.core.tokenizers.MegatronTokenizer`)."
+                "You're using the legacy tokenizer system, which is deprecated "
+                "and will be removed in a future release. Please migrate to the new "
+                "tokenizer system (`megatron.core.tokenizers.MegatronTokenizer`)."
             )
         self.unique_identifiers = OrderedDict()
         self.unique_identifiers["class"] = type(self).__name__

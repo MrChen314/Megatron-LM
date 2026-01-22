@@ -14,8 +14,8 @@ from typing import Any, Callable, Iterable, List, NamedTuple, Optional, Set, Tup
 import numpy as np
 import torch
 
-from megatron.core.dist_checkpointing.mapping import ShardedObject
 from megatron.core._rank_utils import safe_get_rank
+from megatron.core.dist_checkpointing.mapping import ShardedObject
 
 """DISCLAIMER: THIS IS AN EXPERIMENTAL FEATURE.
 

@@ -336,8 +336,9 @@ class MultiGroupMemPoolAllocator:
                         # Older PyTorch/APIs without 'symm' keyword.
                         if safe_get_rank() == 0:
                             logging.warning(
-                                f"[MCORE][MultiGroupMemPoolAllocator] Failed in symmetric registration."
-                                f"Falling back to non-symmetric registration!!"
+                                "[MCORE][MultiGroupMemPoolAllocator] "
+                                "Failed in symmetric registration. "
+                                "Falling back to non-symmetric registration!!"
                             )
                         backend.register_mem_pool(self.pool)
                 else:

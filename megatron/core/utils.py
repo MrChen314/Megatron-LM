@@ -10,7 +10,6 @@ import inspect
 import logging
 import math
 import operator
-import os
 import queue
 import socket
 import sys
@@ -45,8 +44,8 @@ except ImportError:
     HAVE_TRITON = False
 
 from megatron.core import config
-from megatron.core.package_info import __version__ as mcore_version
 from megatron.core._rank_utils import safe_get_rank
+from megatron.core.package_info import __version__ as mcore_version
 
 try:
     from torch.distributed._tensor import DTensor

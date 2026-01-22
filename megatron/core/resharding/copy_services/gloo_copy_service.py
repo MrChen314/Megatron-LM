@@ -45,7 +45,9 @@ class GlooCopyService(CopyService):
         self.recv_ops: List[Tuple[RecvOp, torch.Tensor]] = []
         self._copy_stream = torch.cuda.Stream()
         if self.rank == 0:
-            logger.info(f"GlooCopyService initialized on rank {self.rank} with {self.world_size} ranks")
+            logger.info(
+                f"GlooCopyService initialized on rank {self.rank} with {self.world_size} ranks"
+            )
 
     def submit_send(self, src_tensor: torch.Tensor, dest_rank: int):
         self.send_ops.append(SendOp(task_id=None, tensor=src_tensor, dest_rank=dest_rank))

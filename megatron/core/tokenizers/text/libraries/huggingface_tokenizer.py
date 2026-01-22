@@ -10,8 +10,9 @@ try:
 except ModuleNotFoundError:
     HAVE_TRANSFORMERS = False
 
-from .abstract_tokenizer import MegatronTokenizerTextAbstract
 from megatron.core.utils import safe_get_rank
+
+from .abstract_tokenizer import MegatronTokenizerTextAbstract
 
 logger = logging.getLogger(__name__)
 
